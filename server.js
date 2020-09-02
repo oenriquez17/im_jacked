@@ -10,7 +10,7 @@ app.use('/ajax', express.static(__dirname + '/node_modules/ajax/lib'));
 app.set('view engine', 'ejs');
 
 app.listen(port, () => {
-  console.log(`App listening at http://localhost:${port}`)
+  console.log(`App listening at http://localhost:${port}`);
 });
 
 app.get('/', function(req, res) {

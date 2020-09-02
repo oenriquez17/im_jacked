@@ -1,0 +1,22 @@
+{
+  "name": "im_jacked",
+  "version": "1.0.0",
+  "description": "Workout tracker application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oenriquez17/im_jacked.git"
+  },
+  "author": "Oscar Enriquez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oenriquez17/im_jacked/issues"
+  },
+  "homepage": "https://github.com/oenriquez17/im_jacked#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

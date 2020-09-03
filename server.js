@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
+const db = require('./configuration/db_conn');
+
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js'));
 app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist'));

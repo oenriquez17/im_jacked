@@ -1,0 +1,61 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    
+    <title>Exericse</title>
+
+    <link href="/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <script src="/jquery/jquery.js"></script>
+</head>
+
+<body>
+    <%- include('navbar') %>
+
+    <br>
+
+    <div id="exercise-form" class="container">
+        <form>
+            <div class="form-group">
+                <label for="exercise-name">Exercise</label>
+                <input type="text" class="form-control" id="exercise-name" placeholder="Exercise name">
+            </div>
+            <div class="form-group">
+                <label for="muscles-worked">Muscle worked</label>
+                <select class="form-control" id="muscles-worked">
+                </select>
+            </div>
+            <div class="form-group">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="bodyweight">
+                    <label class="form-check-label" for="bodyweight">Bodyweight Exercise</label>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+    <!--Adding navbar to html page-->
+    <script>
+        //TODO
+        let dropdown = $('#muscles-worked');
+
+        dropdown.empty();
+
+        dropdown.append('<option selected="true" disabled>Choose muscle worked</option>');
+        dropdown.prop('selectedIndex', 0);
+        
+        const url = 'MusclesWorked.json';
+
+        // Populate dropdown with list of provinces
+        $.getJSON(url, function(data) {
+            $.each(data, function(key, entry) {
+                dropdown.append($('<option></option>').attr('value', entry.id).text(entry.name));
+            })
+        });
+    </script>
+
+</body>
+</html>

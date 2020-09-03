@@ -16,5 +16,13 @@ app.listen(port, () => {
 });
 
 app.get('/', function(req, res) {
-  res.render('index');
+  res.render('navbar');
+});
+
+app.get('/workoutentry', function(req, res) {
+  res.render('workoutentry');
+});
+
+app.get('/exercise', function(req, res) {
+  res.render('exercise');
 });

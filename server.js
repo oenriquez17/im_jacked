@@ -8,6 +8,7 @@ app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js'));
 app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist'));
 app.use('/ajax', express.static(__dirname + '/node_modules/ajax/lib'));
+app.use('/data', express.static(__dirname + '/data'));
 
 app.set('view engine', 'ejs');
 

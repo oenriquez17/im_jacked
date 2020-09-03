@@ -1,0 +1,46 @@
+[
+    {
+        "id": "ABS",
+        "name":"Abs"
+    },
+    {
+        "id":"BACK",
+        "name":"Back"
+    },
+    {
+        "id":"BI",
+        "name":"Biceps"
+    },
+    {
+        "id":"CALF",
+        "name":"Calves"
+    },
+    {
+        "id":"CHEST",
+        "name":"Chest"
+    },
+    {
+        "id":"FRONT",
+        "name":"Front Delts"
+    },
+    {
+        "id":"HAM",
+        "name":"Hamstring"
+    },
+    {
+        "id":"QUAD",
+        "name":"Quads"
+    },
+    {
+        "id":"REAR",
+        "name":"Rear Delts"
+    },
+    {
+        "id":"Side",
+        "name":"Side Delts"
+    },
+    {
+        "id":"TRI",
+        "name":"Triceps"
+    }
+]

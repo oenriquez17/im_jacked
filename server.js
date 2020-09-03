@@ -5,6 +5,7 @@ const port = 3000;
 
 // create db connection
 var db = require('./configuration/db_conn');
+var queries = require('./queries/queries');
 
 // create url-encoded parser
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
@@ -37,7 +38,10 @@ app.get('/exercise', function(req, res) {
 });
 
 app.post('/add_edit_exercise', urlencodedParser, function (req, res) {
-  console.log("Name: " + req.body.exercise);
-  console.log("Muscle: " + req.body.muscle);
+  var exercise_name =  req.body.exercise;
+  var muscle_worked =  req.body.muscle;
+  var uses_bodyweight = req.body.bodyweight == 'on' ? true : false;
+  db.pool.query(queries.insert_exercise, [exercise_name, muscle_worked, uses_bodyweight]);
+  
   res.send('POST request to the homepage');
 });

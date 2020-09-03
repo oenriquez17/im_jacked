@@ -27,3 +27,7 @@ app.get('/workoutentry', function(req, res) {
 app.get('/exercise', function(req, res) {
   res.render('exercise');
 });
+
+app.post('/add_edit_exercise', function (req, res) {
+  res.send('POST request to the homepage');
+});

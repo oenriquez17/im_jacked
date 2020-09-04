@@ -26,7 +26,7 @@ app.listen(port, () => {
 });
 
 app.get('/', function(req, res) {
-  res.render('navbar');
+  res.render('index');
 });
 
 app.get('/workoutentry', async function(req, res) {

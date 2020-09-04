@@ -76,18 +76,18 @@
         //addiong logic to exercise selection
         $('select').change(function () {
             var exercise_id = $('select#exercise').val();
-            var exerciseObj = getExerciseById(exercise_id);
+            var exericse_obj;
             
-            $('#weight').prop('readonly', exerciseObj.bodyweight);
-            $('#reps').prop('required', exerciseObj.bodyweight);
-        });
-
-        function getExerciseById(id) {
-            return available_exercises.filter(
-                function(available_exercises){ 
-                    return available_exercises.id == id 
+            for (var i = 0; i < available_exercises.length; i++){
+                if (available_exercises[i].id == exercise_id){
+                    exericse_obj = available_exercises[i];
+                    break;
                 }
-        );}
+            }
+            
+            $('#weight').prop('readonly', exericse_obj.bodyweight);
+            $('#reps').prop('required', exericse_obj.bodyweight);
+        });
 
     </script>
     <script src="/js/bootstrap.js" type="text/javascript"></script>

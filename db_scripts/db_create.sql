@@ -10,9 +10,10 @@ CREATE TABLE exercises(
     ID SERIAL PRIMARY KEY,
     NAME TEXT NOT NULL,
     MUSCLE_WORKED TEXT,
-    BODYWEIGHT BOOLEAN,
-    UNIQUE(NAME)
+    BODYWEIGHT BOOLEAN
 );
+
+CREATE UNIQUE INDEX ux_table_field ON exercises(UPPER(NAME));
 
 -- Create workout entry table
 CREATE TABLE workout_entries(

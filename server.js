@@ -25,8 +25,9 @@ app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
 });
 
-app.get('/', function(req, res) {
-  res.render('index');
+app.get('/', async function(req, res) {
+  const exercise_details = await db.pool.query(queries.get_weight_exercise_details);
+  res.render('index', {details: exercise_details.rows});
 });
 
 app.get('/workoutentry', async function(req, res) {
@@ -45,22 +46,19 @@ app.post('/add_edit_exercise', urlencodedParser, function (req, res) {
   //todo: check postgres capitalization
   //add error
   //https://medium.com/@kongruksiamza/nodejs-validate-data-and-alert-message-in-ejs-template-engine-f2844a4cb255
-  db.pool.query(queries.insert_exercise, [exercise_name, muscle_worked, uses_bodyweight], (err, res) => {
-    if(err) return res.status(403).send();
-
-  });
+  db.pool.query(queries.insert_exercise, [exercise_name, muscle_worked, uses_bodyweight]);
   
-  res.redirect('/exercise');
+  res.redirect('/');
 });
 
 app.post('/add_edit_workoutentry', urlencodedParser, function (req, res) {
   var date =  req.body.workoutdate;
   var exercise =  req.body.exercise;
-  var reps = req.body.reps;
-  var weight = req.body.weight;
+  var reps = req.body.reps == "" ? null : parseInt(req.body.reps);
+  var weight = req.body.weight == "" ? null : parseInt(req.body.weight);
   
   db.pool.query(queries.insert_workout_entry, 
     [date, exercise, reps, weight]);
   
-  res.send('POST request to the homepage');
+    res.redirect('/');
 });

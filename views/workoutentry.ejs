@@ -18,37 +18,41 @@
     <br>
 
     <div id="workout-entry-form" class="container">
-        <form>
+        <form action="add_edit_workoutentry" method="post">
             <div class="form-group">
                 <label for="workout-date">Workout Date</label>
-                <input class="form-control" type="date" id="workout-date">
+                <input class="form-control" type="date" name="workoutdate" id="workout-date">
             </div>
             <div class="form-group">
                 <label for="exercise">Exercise</label>
-                <select class="form-control" id="exercise">
-                </select>
+                <select class="form-control" id="exercise" name="exercise"></select>
             </div>
             <div class="form-group">
                 <label for="sets">Sets</label>
-                <input class="form-control" type="number" id="sets" placeholder="Enter the number of sets performed">
+                <input class="form-control" type="number" id="sets" name="sets" placeholder="Enter the number of sets performed">
             </div>
             <div class="form-group">
                 <label for="reps">Reps</label>
-                <input class="form-control" type="number" id="reps" placeholder="Enter the number of reps per set performed">
+                <input class="form-control" type="number" id="reps" name="reps" placeholder="Enter the number of reps per set performed">
             </div>
             <div class="form-group">
                 <label for="weight">Weight</label>
                 <div class="input-group">
-                    <input type="number" class="form-control" placeholder="Enter weight">
+                    <input type="number" class="form-control" name="weight" placeholder="Enter weight">
                     <div class="input-group-append">
                         <span class="input-group-text" id="basic-addon2">Lbs</span>
                     </div>
                 </div>
             </div>
+
+            <br>
+
+            <button class="btn btn-dark float-right" type="submit">Submit</button>
         </form>
     </div>
 
-    <script>
+    <script type="text/javascript">
+        //set date field to current date
         var now = new Date();
 
         var day = ("0" + now.getDate()).slice(-2);
@@ -57,8 +61,25 @@
         var today = now.getFullYear() + "-" + (month) + "-" + (day);
 
         $('#workout-date').val(today);
+
+        //populate exercise dropdown with available values
+        let dropdown = $('#exercise');
+
+        dropdown.empty();
+
+        dropdown.append('<option disabled>Choose exercise</option>');
+        dropdown.prop('selectedIndex', 0);
+
+        var available_exercises = JSON.parse('<%- JSON.stringify(exercises) %>');
+        $.each(available_exercises, function(i, exercise) {
+            var id = available_exercises[i].id;
+            var name = available_exercises[i].name;
+            dropdown.append($('<option></option>').attr('value', id).text(name));
+        });
+
     </script>
     <script src="/js/bootstrap.js" type="text/javascript"></script>
 
 </body>
+
 </html>

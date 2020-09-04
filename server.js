@@ -29,8 +29,9 @@ app.get('/', function(req, res) {
   res.render('navbar');
 });
 
-app.get('/workoutentry', function(req, res) {
-  res.render('workoutentry');
+app.get('/workoutentry', async function(req, res) {
+  const db_exercises = await db.pool.query(queries.get_all_exercise);
+  res.render('workoutentry', {exercises: db_exercises.rows});
 });
 
 app.get('/exercise', function(req, res) {
@@ -38,6 +39,15 @@ app.get('/exercise', function(req, res) {
 });
 
 app.post('/add_edit_exercise', urlencodedParser, function (req, res) {
+  var exercise_name =  req.body.exercise;
+  var muscle_worked =  req.body.muscle;
+  var uses_bodyweight = req.body.bodyweight == 'on' ? true : false;
+  db.pool.query(queries.insert_exercise, [exercise_name, muscle_worked, uses_bodyweight]);
+  
+  res.send('POST request to the homepage');
+});
+
+app.post('/add_edit_workoutentry', urlencodedParser, function (req, res) {
   var exercise_name =  req.body.exercise;
   var muscle_worked =  req.body.muscle;
   var uses_bodyweight = req.body.bodyweight == 'on' ? true : false;

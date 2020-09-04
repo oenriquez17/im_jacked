@@ -56,12 +56,11 @@ app.post('/add_edit_exercise', urlencodedParser, function (req, res) {
 app.post('/add_edit_workoutentry', urlencodedParser, function (req, res) {
   var date =  req.body.workoutdate;
   var exercise =  req.body.exercise;
-  var sets = req.body.sets;
   var reps = req.body.reps;
   var weight = req.body.weight;
   
   db.pool.query(queries.insert_workout_entry, 
-    [date, exercise, sets, reps, weight]);
+    [date, exercise, reps, weight]);
   
   res.send('POST request to the homepage');
 });

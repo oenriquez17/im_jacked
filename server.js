@@ -16,6 +16,7 @@ app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js'));
 app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist'));
 app.use('/ajax', express.static(__dirname + '/node_modules/ajax/lib'));
 app.use('/data', express.static(__dirname + '/data'));
+app.use('/chartjs', express.static(__dirname + '/node_modules/chart.js/dist'));
 
 // configure engine to use ejs
 app.set('view engine', 'ejs');
@@ -39,13 +40,19 @@ app.get('/exercise', function(req, res) {
   res.render('exercise');
 });
 
+app.get('/detailprogress', function(req, res) {
+  res.render('detailprogress');
+});
+
+app.get('/detailprogress', function(req, res) {
+  res.render('detailprogress');
+});
+
 app.post('/add_edit_exercise', urlencodedParser, function (req, res) {
   var exercise_name =  req.body.exercise;
   var muscle_worked =  req.body.muscle;
   var uses_bodyweight = req.body.bodyweight == 'on' ? true : false;
-  //todo: check postgres capitalization
-  //add error
-  //https://medium.com/@kongruksiamza/nodejs-validate-data-and-alert-message-in-ejs-template-engine-f2844a4cb255
+  
   db.pool.query(queries.insert_exercise, [exercise_name, muscle_worked, uses_bodyweight]);
   
   res.redirect('/');

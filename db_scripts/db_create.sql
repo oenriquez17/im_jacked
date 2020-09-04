@@ -13,7 +13,7 @@ CREATE TABLE exercises(
     BODYWEIGHT BOOLEAN
 );
 
-CREATE UNIQUE INDEX ux_table_field ON exercises(UPPER(NAME));
+CREATE UNIQUE INDEX ux_exercise_name ON exercises(UPPER(NAME));
 
 -- Create workout entry table
 CREATE TABLE workout_entries(
@@ -26,6 +26,8 @@ CREATE TABLE workout_entries(
         FOREIGN KEY(EXERCISE)
             REFERENCES exercises(ID)
 );
+
+CREATE UNIQUE INDEX ux_workout_entry_date ON workout_entries(ENTRY_DATE, EXERCISE);
 
 -- Create workout routine table
 CREATE TABLE workout_routine(

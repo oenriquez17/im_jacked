@@ -52,7 +52,7 @@
                 }
 
                 rows += '<tr><td>' + exercise.name + '</td><td style="text-align:center;">' + exercise.max + '</td>';
-                rows += "<td style=\"text-align:center;" + style + "\"><strong>" + percentage + ' %' + '</strong></td></tr>';
+                rows += "<td style=\"text-align:center;" + style + "\"><strong>" + percentage.toFixed(2) + ' %' + '</strong></td></tr>';
             });
 
             rows += '</tbody>';

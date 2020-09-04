@@ -16,7 +16,48 @@
 
     <br>
 
+    <div class="container">
+        <table class="table table-hover" id="details-table">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">Exercise</th>
+                    <th scope="col" style="text-align:center;">Max Weight (lbs)</th>
+                    <th scope="col" style="text-align:center;">Progress (%)</th>
+                </tr>
+            </thead>
+
+        </table>
+    </div>
+
     <script src="/js/bootstrap.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        
+        var details = JSON.parse('<%- JSON.stringify(details) %>');
+
+        $(function() {
+            var rows = '<tbody>';
+            $.each(details, function (i, exercise) {
+                var max = exercise.max;
+                var min = exercise.min;
+                var percentage = ((max - min) / min) * 100;
+                
+                var style;
+                if(percentage > 0){
+                    style = "color:green;";
+                } else if(percentage < 0){
+                    style = "color:green;";
+                } else{
+                    style = "color:gray;";
+                }
+
+                rows += '<tr><td>' + exercise.name + '</td><td style="text-align:center;">' + exercise.max + '</td>';
+                rows += "<td style=\"text-align:center;" + style + "\"><strong>" + percentage + '</strong></td></tr>';
+            });
+
+            rows += '</tbody>';
+            $('#details-table').append(rows);
+        });
+    </script>
 </body>
 
 </html>

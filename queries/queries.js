@@ -6,10 +6,9 @@ const insert_workout_entry = 'INSERT INTO workout_entries(entry_date, exercise, 
 
 const get_all_exercise = 'SELECT * FROM exercises';
 
-const get_exercise_byname = 'SELECT * FROM exercises WHERE Name Like $1';
+const get_weight_exercise_details = 'SELECT w.exercise AS Id, e.Name AS Name, MAX(w.weight) AS max, MIN(w.weight) AS min FROM workout_entry w INNER JOIN exercises e ON e.Id = w.exercise WHERE e.bodyweight = False GROUP BY Id';
 
 module.exports = 
     {insert_exercise,
     insert_workout_entry,
-    get_all_exercise, 
-    get_exercise_byname};
+    get_all_exercise};

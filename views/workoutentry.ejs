@@ -74,17 +74,17 @@
         });
 
         //adding logic to exercise selection
-        $('select').change(function () {
+        $('select').change(function() {
             var exercise_id = $('select#exercise').val();
             var exericse_obj;
-            
-            for (var i = 0; i < available_exercises.length; i++){
-                if (available_exercises[i].id == exercise_id){
+
+            for (var i = 0; i < available_exercises.length; i++) {
+                if (available_exercises[i].id == exercise_id) {
                     exericse_obj = available_exercises[i];
                     break;
                 }
             }
-            
+
             $('#weight').prop('readonly', exericse_obj.bodyweight);
             $('#reps').prop('required', exericse_obj.bodyweight);
         });

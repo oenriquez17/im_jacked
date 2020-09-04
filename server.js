@@ -48,10 +48,14 @@ app.post('/add_edit_exercise', urlencodedParser, function (req, res) {
 });
 
 app.post('/add_edit_workoutentry', urlencodedParser, function (req, res) {
-  var exercise_name =  req.body.exercise;
-  var muscle_worked =  req.body.muscle;
-  var uses_bodyweight = req.body.bodyweight == 'on' ? true : false;
-  db.pool.query(queries.insert_exercise, [exercise_name, muscle_worked, uses_bodyweight]);
+  var date =  req.body.workoutdate;
+  var exercise =  req.body.exercise;
+  var sets = req.body.sets;
+  var reps = req.body.reps;
+  var weight = req.body.weight;
+  
+  db.pool.query(queries.insert_workout_entry, 
+    [date, exercise, sets, reps, weight]);
   
   res.send('POST request to the homepage');
 });

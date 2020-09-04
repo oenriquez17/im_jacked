@@ -36,7 +36,11 @@
         "name":"Rear Delts"
     },
     {
-        "id":"Side",
+        "id":"SHOU",
+        "name":"Shoulders"
+    },
+    {
+        "id":"SIDE",
         "name":"Side Delts"
     },
     {

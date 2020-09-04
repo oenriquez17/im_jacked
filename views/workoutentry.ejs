@@ -21,11 +21,11 @@
         <form action="add_edit_workoutentry" method="post">
             <div class="form-group">
                 <label for="workout-date">Workout Date</label>
-                <input class="form-control" type="date" name="workoutdate" id="workout-date">
+                <input class="form-control" type="date" name="workoutdate" id="workout-date" required>
             </div>
             <div class="form-group">
                 <label for="exercise">Exercise</label>
-                <select class="form-control" id="exercise" name="exercise"></select>
+                <select class="form-control" id="exercise" name="exercise" required></select>
             </div>
             <div class="form-group">
                 <label for="reps">Reps</label>
@@ -34,7 +34,7 @@
             <div class="form-group">
                 <label for="weight">Weight</label>
                 <div class="input-group">
-                    <input type="number" class="form-control" name="weight" placeholder="Enter weight">
+                    <input type="number" id="weight" class="form-control" name="weight" placeholder="Enter weight" required>
                     <div class="input-group-append">
                         <span class="input-group-text" id="basic-addon2">Lbs</span>
                     </div>
@@ -72,6 +72,22 @@
             var name = available_exercises[i].name;
             dropdown.append($('<option></option>').attr('value', id).text(name));
         });
+
+        //addiong logic to exercise selection
+        $('select').change(function () {
+            var exercise_id = $('select#exercise').val();
+            var exerciseObj = getExerciseById(exercise_id);
+            
+            $('#weight').prop('readonly', exerciseObj.bodyweight);
+            $('#reps').prop('required', exerciseObj.bodyweight);
+        });
+
+        function getExerciseById(id) {
+            return available_exercises.filter(
+                function(available_exercises){ 
+                    return available_exercises.id == id 
+                }
+        );}
 
     </script>
     <script src="/js/bootstrap.js" type="text/javascript"></script>

@@ -40,12 +40,17 @@ app.get('/exercise', function(req, res) {
   res.render('exercise');
 });
 
-app.get('/detailprogress', function(req, res) {
-  res.render('detailprogress');
+app.get('/detailprogress', async function(req, res) {
+  const db_exercises = await db.pool.query(queries.get_all_weight_exercise);
+  res.render('detailprogress', {exercises: db_exercises.rows});
 });
 
-app.get('/detailprogress', function(req, res) {
-  res.render('detailprogress');
+app.get('/filterbyexercise', async function(req, res) {
+  var exercise = req.query.exercise;
+  const filter = await db.pool.query(queries.get_exerciseprogress_details, [exercise]);
+  
+  res.setHeader('Content-Type', 'application/json');
+  res.json(filter.rows);
 });
 
 app.post('/add_edit_exercise', urlencodedParser, function (req, res) {

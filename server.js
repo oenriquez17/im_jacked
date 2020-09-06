@@ -53,24 +53,43 @@ app.get('/filterbyexercise', async function(req, res) {
   res.json(filter.rows);
 });
 
-app.post('/add_edit_exercise', urlencodedParser, function (req, res) {
+app.post('/add_edit_exercise', urlencodedParser, async function (req, res) {
+  const r = res;
   var exercise_name =  req.body.exercise;
   var muscle_worked =  req.body.muscle;
   var uses_bodyweight = req.body.bodyweight == 'on' ? true : false;
   
-  db.pool.query(queries.insert_exercise, [exercise_name, muscle_worked, uses_bodyweight]);
-  
-  res.redirect('/');
+  db.pool.query(queries.insert_exercise, [exercise_name, muscle_worked, uses_bodyweight],
+    (err, res) => {
+      if(err){
+        r.render('exercise', {error: 'Exercise name already exists.'})
+      }else{
+        r.redirect('/');
+      }
+    }  
+  );
 });
 
-app.post('/add_edit_workoutentry', urlencodedParser, function (req, res) {
-  var date =  req.body.workoutdate;
-  var exercise =  req.body.exercise;
+app.post('/add_edit_workoutentry', urlencodedParser, async function (req, res) {
+  const r = res;
+  const date =  req.body.workoutdate;
+  const exercise =  req.body.exercise;
   var reps = req.body.reps == "" ? null : parseInt(req.body.reps);
   var weight = req.body.weight == "" ? null : parseInt(req.body.weight);
   
-  db.pool.query(queries.insert_workout_entry, 
-    [date, exercise, reps, weight]);
-  
-    res.redirect('/');
+  db.pool.query(queries.insert_workout_entry, [date, exercise, reps, weight],
+    (err, res) => {
+      if(err) {
+        var d = new Date(date);
+        var e = 'Exercise already logged for ' 
+        + (d.getMonth() < 9 ? ('0' + (d.getMonth() + 1)) : (d.getMonth() + 1))
+        + '/' 
+        + (d.getDay() < 10 ? ('0' + d.getDay()) : d.getDay())
+        + '/' + d.getFullYear();
+        r.render('workoutentry', {error: e, exercises: {}});
+      } else {
+        r.redirect('/');
+      }
+    }
+  );
 });

@@ -6,7 +6,7 @@ const insert_workout_entry = 'INSERT INTO workout_entries(entry_date, exercise, 
 
 const get_all_exercise = 'SELECT * FROM exercises';
 
-const get_all_weight_exercise = 'SELECT * FROM exercises WHERE bodyweight = False'
+const get_all_weight_exercise = 'SELECT * FROM exercises WHERE bodyweight = False ORDER BY name'
 
 const get_weight_exercise_details = 'SELECT e.Name AS name, MAX(w.weight) AS max, MIN(w.weight) AS min FROM workout_entries w INNER JOIN exercises e ON e.Id = w.exercise WHERE e.bodyweight = False GROUP BY name';
 

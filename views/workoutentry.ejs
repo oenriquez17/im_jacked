@@ -19,6 +19,14 @@
     <br>
 
     <div id="workout-entry-form" class="container">
+        <div class="error">
+            <% if (locals.error) { %>
+                <div class="alert alert-danger" role="alert">
+                    <%= error %>
+                </div>
+            <% } %>
+        </div>
+
         <form action="add_edit_workoutentry" method="post">
             <div class="form-group">
                 <label for="workout-date">Workout Date</label>
@@ -30,12 +38,12 @@
             </div>
             <div class="form-group">
                 <label for="reps">Reps</label>
-                <input class="form-control" type="number" id="reps" name="reps" placeholder="Enter the number of reps per set performed">
+                <input class="form-control" autocomplete="off" type="number" id="reps" name="reps" placeholder="Enter the number of reps per set performed">
             </div>
             <div class="form-group">
                 <label for="weight">Weight</label>
                 <div class="input-group">
-                    <input type="number" id="weight" class="form-control" name="weight" placeholder="Enter weight" required>
+                    <input type="number" id="weight" autocomplete="off" class="form-control" name="weight" placeholder="Enter weight" required>
                     <div class="input-group-append">
                         <span class="input-group-text" id="basic-addon2">Lbs</span>
                     </div>
@@ -64,8 +72,7 @@
 
         dropdown.empty();
 
-        dropdown.append('<option disabled>Choose exercise</option>');
-        dropdown.prop('selectedIndex', 0);
+        dropdown.append('<option disabled selected value>Choose exercise</option>');
 
         var available_exercises = JSON.parse('<%- JSON.stringify(exercises) %>');
         $.each(available_exercises, function(i, exercise) {

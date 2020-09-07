@@ -45,6 +45,31 @@ app.get('/detailprogress', async function(req, res) {
   res.render('detailprogress', {exercises: db_exercises.rows});
 });
 
+app.get('/allworkoutentries', async function(req, res) {
+  var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var months = ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec'];
+  
+  var today = new Date();
+  var d = String(today.getDate());
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0');
+  var yyyy = today.getFullYear();
+
+  today = days[today.getDay()] + ' ' + d + ' ' + months[today.getMonth()] + ' ' + yyyy; 
+  db_today = yyyy + '-' + mm + '-' + dd;
+  
+  const db_workout_entries = await db.pool.query(queries.get_workoutentries_bydate, [db_today]);
+  res.render('allworkoutentries', {workout_entries: db_workout_entries.rows, current_date: today, db_date: db_today});
+});
+
+app.get('/workoutentrybydate', async function(req, res) {
+  var db_date = req.query.newdate;
+  const db_workout_entries = await db.pool.query(queries.get_workoutentries_bydate, [db_date]);
+  
+  res.setHeader('Content-Type', 'application/json');
+  res.json(db_workout_entries.rows);
+});
+
 app.get('/filterbyexercise', async function(req, res) {
   var exercise = req.query.exercise;
   const filter = await db.pool.query(queries.get_exerciseprogress_details, [exercise]);

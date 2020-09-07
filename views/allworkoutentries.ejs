@@ -1,0 +1,136 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Workout Entries</title>
+
+    <link href="/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <script src="/jquery/jquery.js"></script>
+</head>
+
+<body>
+    <%- include('navbar') %>
+
+    <br>
+
+    <div class="container">
+        <div class="d-flex justify-content-around">
+            <div>
+                <button type="button" class="btn btn-dark" id="previous"><</button>
+            </div>
+            <div>
+                <h4 id="current-date"><%= current_date %></h4>
+            </div>
+            <div>
+                <button type="button" class="btn btn-dark" id="next">></button>
+            </div>
+        </div>
+    
+        <br>
+        
+        <table class="table table-hover" id="workout-entries">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">Exercise</th>
+                    <th scope="col" style="text-align:center;">Weight (lbs)</th>
+                    <th scope="col" style="text-align:center;">Reps</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+
+            </tbody>
+
+        </table>
+    </div>
+
+    <script src="/js/bootstrap.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        
+        var entries = JSON.parse('<%- JSON.stringify(workout_entries) %>');
+
+        $(function() {
+            var rows = '';
+            $.each(entries, function (i, entry) {
+                rows += '<tr><td>' + entry.name + '</td><td style="text-align:center;">' + entry.weight + '</td>';
+                var reps = (entry.reps_completed) == null ? '' : entry.reps_completed;
+                rows += "<td style=\"text-align:center;\">" + reps + '</td></tr>';
+            });
+
+            $('#table-body').append(rows);
+        });
+
+        // Initial data
+        let db_current_date = '<%- db_date %>';
+        const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+        const months = ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec'];
+
+        $('#previous').click(function() {
+            var new_date_obj = new Date(db_current_date);
+            var newdatestring = new_date_obj.setDate(new_date_obj.getDate());
+  
+            var d = String(new_date_obj.getDate());
+            var dd = String(new_date_obj.getDate()).padStart(2, '0');
+            var mm = String(new_date_obj.getMonth() + 1).padStart(2, '0');
+            var yyyy = new_date_obj.getFullYear();
+
+            newdatestring = yyyy + '-' + mm + '-' + dd;
+            
+            var uri = "/workoutentrybydate?newdate=" + newdatestring; 
+            
+            $.get(uri, function(data, status){
+                $("#table-body").empty();
+
+                var rows = '';
+
+                $.each(data, function (i, entry) {
+                    rows += '<tr><td>' + entry.name + '</td><td style="text-align:center;">' + entry.weight + '</td>';
+                    var reps = (entry.reps_completed) == null ? '' : entry.reps_completed;
+                    rows += "<td style=\"text-align:center;\">" + reps + '</td></tr>';
+                });
+
+                $('#table-body').append(rows);
+                
+                db_current_date = newdatestring;
+                $('#current-date').text(days[new_date_obj.getDay()] + ' ' + d + ' ' + months[new_date_obj.getMonth()] + ' ' + yyyy);
+            }); 
+        });
+
+        $('#next').click(function() {
+            var new_date_obj = new Date(db_current_date);
+            var newdatestring = new_date_obj.setDate(new_date_obj.getDate() + 2);
+  
+            var d = String(new_date_obj.getDate());
+            var dd = String(new_date_obj.getDate()).padStart(2, '0');
+            var mm = String(new_date_obj.getMonth() + 1).padStart(2, '0');
+            var yyyy = new_date_obj.getFullYear();
+
+            newdatestring = yyyy + '-' + mm + '-' + dd;
+            
+            var uri = "/workoutentrybydate?newdate=" + newdatestring; 
+            
+            $.get(uri, function(data, status){
+                $("#table-body").empty();
+
+                var rows = '';
+
+                $.each(data, function (i, entry) {
+                    rows += '<tr><td>' + entry.name + '</td><td style="text-align:center;">' + entry.weight + '</td>';
+                    var reps = (entry.reps_completed) == null ? '' : entry.reps_completed;
+                    rows += "<td style=\"text-align:center;\">" + reps + '</td></tr>';
+                });
+
+                $('#table-body').append(rows);
+                
+                db_current_date = newdatestring;
+                $('#current-date').text(days[new_date_obj.getDay()] + ' ' + d + ' ' + months[new_date_obj.getMonth()] + ' ' + yyyy);
+            }); 
+        });
+
+    </script>
+</body>
+
+</html>

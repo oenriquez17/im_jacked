@@ -28,6 +28,10 @@
         "name":"Hamstring"
     },
     {
+        "id":"LEG",
+        "name":"Legs"
+    },
+    {
         "id":"QUAD",
         "name":"Quads"
     },

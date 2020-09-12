@@ -27,7 +27,14 @@
 
         <br>
 
-        <canvas id="canvas"></canvas>
+        <canvas id="weight-canvas"></canvas>
+
+        <br>
+        <br>
+
+        <canvas id="reps-canvas"></canvas>
+
+        
 	</div>
 
     <script src="/js/bootstrap.js" type="text/javascript"></script>
@@ -36,7 +43,8 @@
     <script type="text/javascript">
 
         // Hides chart when first loaded
-        $('#canvas').hide();
+        $('#weight-canvas').hide();
+        $('#reps-canvas').hide();
         
         // Populate dropdown with list of provinces
         let dropdown = $('#exercise');
@@ -55,7 +63,8 @@
 
         // HTTP Get when option selected
         $('select').change(function() {
-            $('#canvas').show(); 
+            $('#weight-canvas').show(); 
+            $('#reps-canvas').show();
             
             var exercise = $('select#exercise').val();
             var uri = "/filterbyexercise?exercise=" + exercise; 
@@ -65,23 +74,67 @@
 
                 var date_list = [];
                 var weight_list = [];
+                var reps_list = [];
 
                 for (var i = 0; i < workout_entries.length; i++) {
                     date_list.push(workout_entries[i].entry_date);
                     weight_list.push(workout_entries[i].weight);
+                    reps_list.push(workout_entries[i].reps_completed);
                 }
                 
-                config.data.labels = date_list;
-                config.data.datasets[0].data = weight_list;
-                
+                weight_config.data.labels = date_list;
+                weight_config.data.datasets[0].data = weight_list;
 
-                chart.update();
+                reps_config.data.labels = date_list;
+                reps_config.data.datasets[0].data = reps_list;
+                
+                weight_chart.update();
+                reps_chart.update();
             });    
         });
 
-        const ctx = document.getElementById('canvas').getContext('2d');
+        const weight_ctx = document.getElementById('weight-canvas').getContext('2d');
+        const reps_ctx = document.getElementById('reps-canvas').getContext('2d');
                
-        const config = {
+        const reps_config = {
+			type: 'line',
+			data: {
+				labels: [],
+                datasets: 
+                [
+                    {
+                    backgroundColor: 'rgb(255, 0, 0, 0.5)',
+					borderColor: 'rgb(255, 0, 0)',
+					data: [],
+					fill: true,
+                    }
+                ]
+			},
+			options: {
+				responsive: true,
+				scales: {
+					xAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Date'
+						}
+					}],
+					yAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Reps'
+						}
+					}]
+                },
+                legend: {
+                    display:false
+                }
+			}
+        };
+
+        const weight_config = {
 			type: 'line',
 			data: {
 				labels: [],
@@ -119,10 +172,13 @@
 			}
         };
         
-        const chart = new Chart(ctx, config);
+        const weight_chart = new Chart(weight_ctx, weight_config);
+        const reps_chart = new Chart(reps_ctx, reps_config);
         
         window.onload = function() {
-            window.myLine = chart;
+            window.myLine = weight_chart;
+
+            window.myLine = reps_chart;
 		};
     </script>
 </body>

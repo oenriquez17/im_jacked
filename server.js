@@ -41,7 +41,7 @@ app.get('/exercise', function(req, res) {
 });
 
 app.get('/detailprogress', async function(req, res) {
-  const db_exercises = await db.pool.query(queries.get_all_weight_exercise);
+  const db_exercises = await db.pool.query(queries.get_all_exercise);
   res.render('detailprogress', {exercises: db_exercises.rows});
 });
 
@@ -82,9 +82,8 @@ app.post('/add_edit_exercise', urlencodedParser, async function (req, res) {
   const r = res;
   var exercise_name =  req.body.exercise;
   var muscle_worked =  req.body.muscle;
-  var uses_bodyweight = req.body.bodyweight == 'on' ? true : false;
   
-  db.pool.query(queries.insert_exercise, [exercise_name, muscle_worked, uses_bodyweight],
+  db.pool.query(queries.insert_exercise, [exercise_name, muscle_worked],
     (err, res) => {
       if(err){
         r.render('exercise', {error: 'Exercise name already exists.'})

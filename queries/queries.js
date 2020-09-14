@@ -6,7 +6,7 @@ const insert_workout_entry = 'INSERT INTO workout_entries(entry_date, exercise, 
 
 const get_all_exercise = 'SELECT * FROM exercises ORDER BY name';
 
-const get_exercise_details = 'SELECT e.Name AS name, MAX(w.weight) AS max, MIN(w.weight) AS min, w.reps_completed AS reps FROM workout_entries w INNER JOIN exercises e ON e.Id = w.exercise GROUP BY name, reps ORDER BY name, reps';
+const get_exercise_details = 'SELECT e.Name AS name, MAX(w.weight) AS max, MIN(w.weight) AS min FROM workout_entries w INNER JOIN exercises e ON e.Id = w.exercise GROUP BY name ORDER BY name';
 
 const get_exerciseprogress_details = "SELECT w.weight, w.reps_completed, TO_CHAR(w.entry_date, 'MM/DD/YYYY') AS entry_date FROM workout_entries w INNER JOIN exercises e ON e.Id = w.exercise WHERE e.Id = $1 ORDER BY entry_date";
 

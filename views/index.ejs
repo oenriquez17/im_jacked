@@ -23,7 +23,8 @@
                 <tr>
                     <th scope="col">Exercise</th>
                     <th scope="col" style="text-align:center;">Max Weight (lbs)</th>
-                    <th scope="col" style="text-align:center;">Progress</th>
+                    <th scope="col" style="text-align:center;">Reps</th>
+                    <th scope="col" style="text-align:center;">Progress (lbs)</th>
                 </tr>
             </thead>
 
@@ -40,19 +41,19 @@
             $.each(details, function (i, exercise) {
                 var max = exercise.max;
                 var min = exercise.min;
-                var percentage = ((max - min) / min) * 100;
+                var progress = (max - min);
                 
                 var style;
-                if(percentage > 0){
+                if(progress > 0){
                     style = "color:green;";
-                } else if(percentage < 0){
+                } else if(progress < 0){
                     style = "color:green;";
                 } else{
                     style = "color:gray;";
                 }
 
-                rows += '<tr><td>' + exercise.name + '</td><td style="text-align:center;">' + exercise.max + '</td>';
-                rows += "<td style=\"text-align:center;" + style + "\"><strong>" + percentage.toFixed(2) + ' %' + '</strong></td></tr>';
+                rows += '<tr><td>' + exercise.name + '</td><td style="text-align:center;">' + exercise.max + '</td>' + '</td><td style="text-align:center;">' + exercise.reps + '</td>';
+                rows += "<td style=\"text-align:center;" + style + "\"><strong>" + progress + '</strong></td></tr>';
             });
 
             rows += '</tbody>';

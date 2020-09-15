@@ -41,8 +41,9 @@ app.get('/exercise', function(req, res) {
 });
 
 app.get('/detailprogress', async function(req, res) {
+  const id = req.query.id;
   const db_exercises = await db.pool.query(queries.get_all_exercise);
-  res.render('detailprogress', {exercises: db_exercises.rows});
+  res.render('detailprogress', {exercises: db_exercises.rows, id: id});
 });
 
 app.get('/allworkoutentries', async function(req, res) {

@@ -41,6 +41,8 @@
                 var max = exercise.max;
                 var min = exercise.min;
                 var progress = (max - min);
+
+                var html_exercise_id = "data-href='" + exercise.id + "'";
                 
                 var style;
                 if(progress > 0){
@@ -51,12 +53,20 @@
                     style = "color:gray;";
                 }
 
-                rows += '<tr><td>' + exercise.name + '</td><td style="text-align:center;">' + exercise.max + '</td>';
+                rows += "<tr class='clickable-row' " + html_exercise_id + "><td>" + exercise.name + '</td><td style="text-align:center;">' + exercise.max + '</td>';
                 rows += "<td style=\"text-align:center;" + style + "\"><strong>" + progress + '</strong></td></tr>';
             });
 
             rows += '</tbody>';
             $('#details-table').append(rows);
+        });
+
+        jQuery(document).ready(function($) {
+            $(".clickable-row").click(function() {
+                var id = $(this).data("href");
+                var uri = '/detailprogress?id=' + id;
+                window.location.replace(uri);
+            });
         });
     </script>
 </body>

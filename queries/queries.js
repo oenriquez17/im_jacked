@@ -1,6 +1,6 @@
 // Exercise queries
 
-const insert_exercise = 'INSERT INTO exercises(name, muscle_worked, bodyweight) VALUES($1, $2, $3)';
+const insert_exercise = 'INSERT INTO exercises(name, muscle_worked) VALUES($1, $2)';
 
 const insert_workout_entry = 'INSERT INTO workout_entries(entry_date, exercise, reps_completed, weight) VALUES($1, $2, $3, $4)';
 

@@ -25,6 +25,10 @@
             </div>
         </form>
 
+        <button class="btn btn-dark float-right" id="add-entry" type="button">Add Entry</button>
+
+        <br>
+        <br>
         <br>
 
         <canvas id="weight-canvas"></canvas>
@@ -33,7 +37,6 @@
         <br>
 
         <canvas id="reps-canvas"></canvas>
-
         
 	</div>
 
@@ -45,6 +48,7 @@
         // Hides chart when first loaded
         $('#weight-canvas').hide();
         $('#reps-canvas').hide();
+        $('#add-entry').hide();
         
         // Populate dropdown with list of provinces
         let dropdown = $('#exercise');
@@ -65,23 +69,27 @@
         if(id){
             $('#weight-canvas').show(); 
             $('#reps-canvas').show();
+            $('#add-entry').show();
 
-            $('#exercise').hide();
+            $('#muscle-filter').hide();
 
             var uri = "/filterbyexercise?exercise=" + id; 
             
             update_chart(uri);
+            button_add_entry(id);
         }
 
         // HTTP Get when option selected
         $('select').change(function() {
             $('#weight-canvas').show(); 
             $('#reps-canvas').show();
+            $('#add-entry').show();
             
             var exercise = $('select#exercise').val();
             var uri = "/filterbyexercise?exercise=" + exercise; 
             
             update_chart(uri);  
+            button_add_entry(exercise);
         });
 
         function update_chart(uri){
@@ -197,7 +205,17 @@
             window.myLine = weight_chart;
 
             window.myLine = reps_chart;
-		};
+        };
+        
+
+        function button_add_entry(id){
+            jQuery(document).ready(function($) {
+                $("#add-entry").click(function() {
+                    var uri = '/workoutentry?id=' + id;
+                    window.location.replace(uri);
+                });
+            });
+        }
     </script>
 </body>
 

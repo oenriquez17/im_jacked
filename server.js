@@ -114,7 +114,7 @@ app.post('/add_edit_workoutentry', urlencodedParser, async function (req, res) {
         + '/' + d.getFullYear();
         r.render('workoutentry', {error: e, exercises: {}});
       } else {
-        r.redirect('/');
+        r.redirect('/detailprogress?id=' + exercise);
       }
     }
   );

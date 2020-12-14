@@ -38,6 +38,7 @@
                     <th scope="col">Exercise</th>
                     <th scope="col" style="text-align:center;">Weight (lbs)</th>
                     <th scope="col" style="text-align:center;">Reps</th>
+                    <th scope="col" style="text-align:center;">Sets</th>
                 </tr>
             </thead>
             <tbody id="table-body">
@@ -57,7 +58,9 @@
             $.each(entries, function (i, entry) {
                 rows += '<tr><td>' + entry.name + '</td><td style="text-align:center;">' + entry.weight + '</td>';
                 var reps = (entry.reps_completed) == null ? '' : entry.reps_completed;
-                rows += "<td style=\"text-align:center;\">" + reps + '</td></tr>';
+                rows += "<td style=\"text-align:center;\">" + reps + '</td>';
+                var sets = (entry.sets_completed) == null ? '' : entry.sets_completed;
+                rows += "<td style=\"text-align:center;\">" + sets + '</td></tr>';
             });
 
             $('#table-body').append(rows);

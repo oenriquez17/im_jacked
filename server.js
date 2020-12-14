@@ -101,9 +101,10 @@ app.post('/add_edit_workoutentry', urlencodedParser, async function (req, res) {
   const date =  req.body.workoutdate;
   const exercise =  req.body.exercise;
   var reps = req.body.reps == "" ? null : parseInt(req.body.reps);
+  var sets = req.body.sets = "" ? null : parseInt(req.body.sets);
   var weight = req.body.weight == "" ? null : parseInt(req.body.weight);
   
-  db.pool.query(queries.insert_workout_entry, [date, exercise, reps, weight],
+  db.pool.query(queries.insert_workout_entry, [date, exercise, reps, sets, weight],
     (err, res) => {
       if(err) {
         var d = new Date(date);

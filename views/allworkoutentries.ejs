@@ -20,13 +20,7 @@
     <div class="container">
         <div class="d-flex justify-content-around">
             <div>
-                <button type="button" class="btn btn-dark" id="previous"><</button>
-            </div>
-            <div>
-                <h4 id="current-date"><%= current_date %></h4>
-            </div>
-            <div>
-                <button type="button" class="btn btn-dark" id="next">></button>
+                <input class="form-control" type="date" id="date">
             </div>
         </div>
     
@@ -71,16 +65,10 @@
         const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
         const months = ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec'];
 
-        $('#previous').click(function() {
-            var new_date_obj = new Date(db_current_date);
-            var newdatestring = new_date_obj.setDate(new_date_obj.getDate());
-  
-            var d = String(new_date_obj.getDate());
-            var dd = String(new_date_obj.getDate()).padStart(2, '0');
-            var mm = String(new_date_obj.getMonth() + 1).padStart(2, '0');
-            var yyyy = new_date_obj.getFullYear();
+        $('#date').val(db_current_date);
 
-            newdatestring = yyyy + '-' + mm + '-' + dd;
+        $('#date').change(function(){
+            newdatestring = $(this).val()
             
             var uri = "/workoutentrybydate?newdate=" + newdatestring; 
             
@@ -92,44 +80,14 @@
                 $.each(data, function (i, entry) {
                     rows += '<tr><td>' + entry.name + '</td><td style="text-align:center;">' + entry.weight + '</td>';
                     var reps = (entry.reps_completed) == null ? '' : entry.reps_completed;
-                    rows += "<td style=\"text-align:center;\">" + reps + '</td></tr>';
+                    rows += "<td style=\"text-align:center;\">" + reps + '</td>';
+                    var sets = (entry.sets_completed) == null ? '' : entry.sets_completed;
+                    rows += "<td style=\"text-align:center;\">" + sets + '</td></tr>';
                 });
 
                 $('#table-body').append(rows);
                 
                 db_current_date = newdatestring;
-                $('#current-date').text(days[new_date_obj.getDay()] + ' ' + d + ' ' + months[new_date_obj.getMonth()] + ' ' + yyyy);
-            }); 
-        });
-
-        $('#next').click(function() {
-            var new_date_obj = new Date(db_current_date);
-            var newdatestring = new_date_obj.setDate(new_date_obj.getDate() + 2);
-  
-            var d = String(new_date_obj.getDate());
-            var dd = String(new_date_obj.getDate()).padStart(2, '0');
-            var mm = String(new_date_obj.getMonth() + 1).padStart(2, '0');
-            var yyyy = new_date_obj.getFullYear();
-
-            newdatestring = yyyy + '-' + mm + '-' + dd;
-            
-            var uri = "/workoutentrybydate?newdate=" + newdatestring; 
-            
-            $.get(uri, function(data, status){
-                $("#table-body").empty();
-
-                var rows = '';
-
-                $.each(data, function (i, entry) {
-                    rows += '<tr><td>' + entry.name + '</td><td style="text-align:center;">' + entry.weight + '</td>';
-                    var reps = (entry.reps_completed) == null ? '' : entry.reps_completed;
-                    rows += "<td style=\"text-align:center;\">" + reps + '</td></tr>';
-                });
-
-                $('#table-body').append(rows);
-                
-                db_current_date = newdatestring;
-                $('#current-date').text(days[new_date_obj.getDay()] + ' ' + d + ' ' + months[new_date_obj.getMonth()] + ' ' + yyyy);
             }); 
         });
 

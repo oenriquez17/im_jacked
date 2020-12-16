@@ -1,9 +1,5 @@
 [
     {
-        "id": "ABS",
-        "name":"Abs"
-    },
-    {
         "id":"BACK",
         "name":"Back"
     },

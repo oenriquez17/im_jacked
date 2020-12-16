@@ -47,17 +47,15 @@
         
         var entries = JSON.parse('<%- JSON.stringify(workout_entries) %>');
 
-        $(function() {
-            var rows = '';
-            $.each(entries, function (i, entry) {
-                rows += '<tr><td>' + entry.name + '</td><td style="text-align:center;">' + entry.weight + '</td>';
-                var reps = (entry.reps_completed) == null ? '' : entry.reps_completed;
-                rows += "<td style=\"text-align:center;\">" + reps + '</td>';
-                var sets = (entry.sets_completed) == null ? '' : entry.sets_completed;
-                rows += "<td style=\"text-align:center;\">" + sets + '</td></tr>';
-            });
+        var all_muscles = '/data/muscles_worked.json';
 
-            $('#table-body').append(rows);
+        var muscle_list = {};
+        $.getJSON(all_muscles, function(data) {
+            $.each(data, function(key, entry) {
+                muscle_list[entry.id] = entry.name;
+            })
+
+            update_table(entries);
         });
 
         // Initial data
@@ -73,19 +71,35 @@
             $.get(uri, function(data, status){
                 $("#table-body").empty();
 
-                var rows = '';
-
-                $.each(data, function (i, entry) {
-                    rows += '<tr><td>' + entry.name + '</td><td style="text-align:center;">' + entry.weight + '</td>';
-                    var reps = (entry.reps_completed) == null ? '' : entry.reps_completed;
-                    rows += "<td style=\"text-align:center;\">" + reps + '</td>';
-                    var sets = (entry.sets_completed) == null ? '' : entry.sets_completed;
-                    rows += "<td style=\"text-align:center;\">" + sets + '</td></tr>';
-                });
-
-                $('#table-body').append(rows);
+                update_table(data);
             }); 
         });
+
+        function update_table(entries){
+            var rows = '';
+
+            $.each(entries, function (i, entry) {
+                //name
+                var muscle = muscle_list[entry.muscle_worked];
+                console.log(muscle);
+                var nameText = entry.name + ' ' + '(' + muscle + ')';
+                rows += '<tr><td>' + nameText + '</td>';
+                
+                //weight
+                var weight = entry.weight;
+                rows += "<td style=\"text-align:center;\">" + entry.weight + '</td>';
+                
+                //reps
+                var reps = (entry.reps_completed) == null ? '' : entry.reps_completed;
+                rows += "<td style=\"text-align:center;\">" + reps + '</td>';
+                
+                //sets
+                var sets = (entry.sets_completed) == null ? '' : entry.sets_completed;
+                rows += "<td style=\"text-align:center;\">" + sets + '</td></tr>';
+            });
+
+            $('#table-body').append(rows);
+        }
 
     </script>
 </body>

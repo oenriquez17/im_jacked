@@ -28,13 +28,3 @@ CREATE TABLE workout_entries(
 );
 
 CREATE UNIQUE INDEX ux_workout_entry_date ON workout_entries(ENTRY_DATE, EXERCISE);
-
--- Create workout routine table
-CREATE TABLE workout_routine(
-    DAY_OF_WEEK INT NOT NULL,
-    MUSCLE_WORKED TEXT NOT NULL,
-    PRIMARY KEY(DAY_OF_WEEK, MUSCLE_WORKED)
-);
-
---ALTER TABLE exercise
---DROP COLUMN bodyweight

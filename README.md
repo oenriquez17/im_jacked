@@ -2,4 +2,6 @@
 
 ## Todo
 
-### Add error handling when inserting data
+### Add workout entry notes
+
+### Enhance index view

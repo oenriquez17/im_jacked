@@ -17,6 +17,7 @@ app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist'));
 app.use('/ajax', express.static(__dirname + '/node_modules/ajax/lib'));
 app.use('/data', express.static(__dirname + '/data'));
 app.use('/chartjs', express.static(__dirname + '/node_modules/chart.js/dist'));
+app.use('/images', express.static(__dirname + '/images'));
 
 // configure engine to use ejs
 app.set('view engine', 'ejs');

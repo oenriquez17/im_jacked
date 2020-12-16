@@ -29,14 +29,21 @@
 
         <br>
         <br>
-        <br>
 
-        <canvas id="weight-canvas"></canvas>
+        <table class="table table-hover" id="workout-entries">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col" style="text-align:center;">Weight (lbs)</th>
+                    <th scope="col" style="text-align:center;">Reps</th>
+                    <th scope="col" style="text-align:center;">Sets</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
 
-        <br>
-        <br>
+            </tbody>
 
-        <canvas id="reps-canvas"></canvas>
+        </table>
         
 	</div>
 
@@ -46,8 +53,7 @@
     <script type="text/javascript">
 
         // Hides chart when first loaded
-        $('#weight-canvas').hide();
-        $('#reps-canvas').hide();
+        $('#workout-entries').hide();
         $('#add-entry').hide();
         
         // Populate dropdown with list of provinces
@@ -67,146 +73,108 @@
 
         var id = '<%- id %>';
         if(id){
-            $('#weight-canvas').show(); 
-            $('#reps-canvas').show();
+            $('#workout-entries').show(); 
             $('#add-entry').show();
 
             $('#muscle-filter').hide();
 
             var uri = "/filterbyexercise?exercise=" + id; 
             
-            update_chart(uri);
+            update_table(uri);
             button_add_entry(id);
         }
 
         // HTTP Get when option selected
         $('select').change(function() {
-            $('#weight-canvas').show(); 
-            $('#reps-canvas').show();
+            $('#workout-entries').show(); 
             $('#add-entry').show();
             
-            var exercise = $('select#exercise').val();
-            var uri = "/filterbyexercise?exercise=" + exercise; 
+            var id = $('select#exercise').val();
+            var uri = "/filterbyexercise?exercise=" + id; 
             
-            update_chart(uri);  
-            button_add_entry(exercise);
+            update_table(uri);  
+            button_add_entry(id);
         });
 
-        function update_chart(uri){
+        function update_table(uri){
+            var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+            
             $.get(uri, function(data, status){
                 var workout_entries = data;
 
-                var date_list = [];
-                var weight_list = [];
-                var reps_list = [];
+                var rows = '';
+                for(i = 0; i < workout_entries.length; i++) {
+                    var dateObj = new Date(workout_entries[i].entry_date);
 
-                for (var i = 0; i < workout_entries.length; i++) {
-                    date_list.push(workout_entries[i].entry_date);
-                    weight_list.push(workout_entries[i].weight);
-                    reps_list.push(workout_entries[i].reps_completed);
-                }
-                
-                weight_config.data.labels = date_list;
-                weight_config.data.datasets[0].data = weight_list;
+                    var dd = String(dateObj.getDate()).padStart(2, '0');
+                    var mm = String(dateObj.getMonth() + 1).padStart(2, '0');
+                    var yyyy = dateObj.getFullYear();
 
-                reps_config.data.labels = date_list;
-                reps_config.data.datasets[0].data = reps_list;
-                
-                weight_chart.update();
-                reps_chart.update();
+                    var dateText = mm + '/' + dd + '/' + yyyy + ' ' + '(' + days[dateObj.getDay()] + ')';
+                    
+                    rows += '<tr><td>' + dateText + '</td>';
+
+                    var up = '<img src="/images/up.png"></img>';
+                    var down = '<img src="/images/down.png"></img>';
+                    
+                    //weight
+                    var weight = workout_entries[i].weight;
+                    if(i < (workout_entries.length - 1)){
+                        var previous_weight = weight - workout_entries[i + 1].weight;
+                        var img = '';
+                        if(previous_weight > 0){
+                            img = up;
+                        }
+                        else if(previous_weight < 0){
+                            img = down;
+                        }
+
+                        rows += "<td style=\"text-align:center;\">" + weight + ' ' + img + '</td>';
+                    }
+                    else{
+                        rows += "<td style=\"text-align:center;\">" + weight + '</td>';
+                    }
+
+                    //reps
+                    var reps = workout_entries[i].reps_completed;
+                    if(i < (workout_entries.length - 1)){
+                        var previous_reps = reps - workout_entries[i + 1].reps_completed;
+                        var img = '';
+                        if(previous_reps > 0){
+                            img = up;
+                        }
+                        else if(previous_reps < 0){
+                            img = down;
+                        }
+
+                        rows += "<td style=\"text-align:center;\">" + reps + ' ' + img + '</td>';
+                    }
+                    else{
+                        rows += "<td style=\"text-align:center;\">" + reps + '</td>';
+                    }
+                    
+                    //sets
+                    var sets = workout_entries[i].sets_completed;
+                    if(i < (workout_entries.length - 1)){
+                        var previous_sets = sets - workout_entries[i + 1].sets_completed;
+                        var img = '';
+                        if(previous_sets > 0){
+                            img = up;
+                        }
+                        else if(previous_sets < 0){
+                            img = down;
+                        }
+
+                        rows += "<td style=\"text-align:center;\">" + sets + ' ' + img + '</td></tr>';
+                    }
+                    else{
+                        rows += "<td style=\"text-align:center;\">" + sets + '</td></tr>';
+                    }
+                };
+
+                $('#table-body').append(rows);
             });   
         }
-
-        const weight_ctx = document.getElementById('weight-canvas').getContext('2d');
-        const reps_ctx = document.getElementById('reps-canvas').getContext('2d');
-               
-        const reps_config = {
-			type: 'line',
-			data: {
-				labels: [],
-                datasets: 
-                [
-                    {
-                    backgroundColor: 'rgb(255, 0, 0, 0.5)',
-					borderColor: 'rgb(255, 0, 0)',
-					data: [],
-                    fill: true,
-                    lineTension: 0
-                    }
-                ]
-			},
-			options: {
-                responsive: true,
-				scales: {
-					xAxes: [{
-						display: true,
-						scaleLabel: {
-							display: true,
-							labelString: 'Date'
-						}
-					}],
-					yAxes: [{
-						display: true,
-						scaleLabel: {
-							display: true,
-							labelString: 'Reps'
-						}
-					}]
-                },
-                legend: {
-                    display:false
-                }
-			}
-        };
-
-        const weight_config = {
-            type: 'line',
-			data: {
-				labels: [],
-                datasets: 
-                [
-                    {
-                    backgroundColor: 'rgb(0, 128, 0, 0.5)',
-					borderColor: 'rgb(0, 128, 0)',
-					data: [],
-                    fill: true,
-                    lineTension: 0
-                    }
-                ]
-			},
-			options: {
-				responsive: true,
-				scales: {
-					xAxes: [{
-						display: true,
-						scaleLabel: {
-							display: true,
-							labelString: 'Date'
-						}
-					}],
-					yAxes: [{
-						display: true,
-						scaleLabel: {
-							display: true,
-							labelString: 'Weight (Lbs)'
-						}
-					}]
-                },
-                legend: {
-                    display:false
-                }
-			}
-        };
-        
-        const weight_chart = new Chart(weight_ctx, weight_config);
-        const reps_chart = new Chart(reps_ctx, reps_config);
-        
-        window.onload = function() {
-            window.myLine = weight_chart;
-
-            window.myLine = reps_chart;
-        };
-        
 
         function button_add_entry(id){
             jQuery(document).ready(function($) {

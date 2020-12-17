@@ -10,7 +10,7 @@ const insert_workout_entry = 'INSERT INTO workout_entries(entry_date, exercise, 
 const get_all_exercise = 'SELECT * FROM exercises ORDER BY name';
 
 //Selects all exercises, which muscles get worked, and Max/Min weight
-const get_exercise_details = 'SELECT e.Id, e.name AS name, e.muscle_worked as muscle, MAX(w.weight) AS max, MIN(w.weight) AS min FROM workout_entries w INNER JOIN exercises e ON e.Id = w.exercise GROUP BY e.Id ORDER BY name';
+const get_exercise_details = 'SELECT e.Id, e.name AS name, e.muscle_worked as muscle, MAX(w.weight) AS max, MIN(w.weight) AS min, CAST(AVG(w.reps_completed) AS DECIMAL(10,2)) as avg_reps FROM workout_entries w INNER JOIN exercises e ON e.Id = w.exercise GROUP BY e.Id ORDER BY name';
 
 //Selects all workout entries to show detailed progress
 const get_exerciseprogress_details = "SELECT w.weight, w.reps_completed, w.sets_completed, w.entry_date AS entry_date FROM workout_entries w INNER JOIN exercises e ON e.Id = w.exercise WHERE e.Id = $1 ORDER BY entry_date DESC";

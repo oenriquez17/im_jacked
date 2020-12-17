@@ -81,9 +81,11 @@
             $.each(entries, function (i, entry) {
                 //name
                 var muscle = muscle_list[entry.muscle_worked];
-                console.log(muscle);
+
+                var html_exercise_id = "data-id='" + entry.id + "'";
+
                 var nameText = entry.name + ' ' + '(' + muscle + ')';
-                rows += '<tr><td>' + nameText + '</td>';
+                rows += "<tr class=\"clickable-row\" " + html_exercise_id +  "><td>" + nameText + '</td>';
                 
                 //weight
                 var weight = entry.weight;
@@ -99,7 +101,15 @@
             });
 
             $('#table-body').append(rows);
+
+            $(".clickable-row").click(function() {
+                var id = $(this).data("id");
+                var uri = '/detailprogress?id=' + id;
+                window.location.replace(uri);
+            });
         }
+
+        
 
     </script>
 </body>

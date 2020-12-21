@@ -48,6 +48,28 @@ app.get('/detailprogress', async function(req, res) {
   res.render('detailprogress', {exercises: db_exercises.rows, id: id});
 });
 
+app.get('/summary', async function(req, res) {
+  //get current week
+  const db_week_number = await db.pool.query(queries.get_week_number);
+  const week_number = db_week_number.rows[0].week_number;
+
+  var d = new Date();
+  var year_week = '' + d.getFullYear() + week_number + '';
+  const db_first_last_day = await db.pool.query(queries.get_first_last_day, [year_week]);
+
+  //get first day of week
+  const first_day = db_first_last_day.rows[0].first;
+
+  //get last day of week
+  const last_day = db_first_last_day.rows[0].last;
+
+  //get exercise data
+  const db_workout_entries = await db.pool.query(queries.get_workoutentries_inweek, [first_day, last_day]);
+
+  //render view
+  res.render('summary', {workout_entries: db_workout_entries.rows, week_number: week_number, first_day: first_day, last_day: last_day});
+});
+
 app.get('/allworkoutentries', async function(req, res) {  
   var today = new Date();
   

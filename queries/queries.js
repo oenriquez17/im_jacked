@@ -18,10 +18,23 @@ const get_exerciseprogress_details = "SELECT w.weight, w.reps_completed, w.sets_
 //Selects all workout entries by date (all exercises for single date)
 const get_workoutentries_bydate = "SELECT w.*, e.* FROM workout_entries w INNER JOIN exercises e ON e.Id = w.exercise WHERE entry_date = $1 ORDER BY w.Id";
 
+//Selects all workout entries between two given dates
+const get_workoutentries_inweek = "SELECT w.*, e.* FROM workout_entries w INNER JOIN exercises e ON e.Id = w.exercise WHERE entry_date >= $1 AND entry_date < $2 ORDER BY entry_date";
+
+//Select week number from current date
+const get_week_number = "SELECT EXTRACT(week FROM current_date) AS week_number";
+
+//Selects first and last day of week (number)
+const get_first_last_day = "SELECT TO_DATE($1, 'iyyyiw') AS first, TO_DATE($1, 'iyyyiw') + 6 AS last";
+
 module.exports = 
     {insert_exercise,
     insert_workout_entry,
     get_all_exercise,
     get_exercise_details,
     get_exerciseprogress_details,
-    get_workoutentries_bydate};
+    get_workoutentries_bydate,
+    get_workoutentries_inweek,
+    get_week_number,
+    get_first_last_day
+};

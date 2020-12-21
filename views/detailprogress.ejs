@@ -37,6 +37,7 @@
                     <th scope="col" style="text-align:center;">Weight (lbs)</th>
                     <th scope="col" style="text-align:center;">Reps</th>
                     <th scope="col" style="text-align:center;">Sets</th>
+                    <th scope="col" style="text-align:center;"></th>
                 </tr>
             </thead>
             <tbody id="table-body">
@@ -96,12 +97,15 @@
         });
 
         function update_table(uri){
+            $("#table-body").empty();
+            
             var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
             
             $.get(uri, function(data, status){
                 var workout_entries = data;
 
                 var rows = '';
+                
                 for(i = 0; i < workout_entries.length; i++) {
                     var dateObj = new Date(workout_entries[i].entry_date);
 
@@ -164,10 +168,19 @@
                             img = down;
                         }
 
-                        rows += "<td style=\"text-align:center;\">" + sets + ' ' + img + '</td></tr>';
+                        rows += "<td style=\"text-align:center;\">" + sets + ' ' + img + '</td>';
                     }
                     else{
-                        rows += "<td style=\"text-align:center;\">" + sets + '</td></tr>';
+                        rows += "<td style=\"text-align:center;\">" + sets + '</td>';
+                    }
+
+                    //notes
+                    var notes = workout_entries[i].notes;
+                    
+                    if(notes != null){
+                        rows += "<td style=\"text-align:center;\">" + '<img src="/images/star.png"></img>' + '</td></tr>';
+                    } else{
+                        rows += "<td style=\"text-align:center;\"></td></tr>";
                     }
                 };
 

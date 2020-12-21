@@ -2,4 +2,10 @@
 
 ## Todo
 
-### Add averages (weekly, monthly, muscles, exercises, etc)
+## Summary (Ideas)
+
+### Side by side daily data
+
+### Total volume per muscle
+
+### Overall data showing volume

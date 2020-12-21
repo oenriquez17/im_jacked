@@ -22,6 +22,7 @@ CREATE TABLE workout_entries(
     REPS_COMPLETED INT,
     SETS_COMPLETED INT,
     WEIGHT INT,
+    NOTES TEXT,
     CONSTRAINT exercise_fk
         FOREIGN KEY(EXERCISE)
             REFERENCES exercises(ID)

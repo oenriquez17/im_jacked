@@ -37,7 +37,6 @@
                     <th scope="col" style="text-align:center;">Weight (lbs)</th>
                     <th scope="col" style="text-align:center;">Reps</th>
                     <th scope="col" style="text-align:center;">Sets</th>
-                    <th scope="col" style="text-align:center;"></th>
                 </tr>
             </thead>
             <tbody id="table-body">
@@ -172,15 +171,6 @@
                     }
                     else{
                         rows += "<td style=\"text-align:center;\">" + sets + '</td>';
-                    }
-
-                    //notes
-                    var notes = workout_entries[i].notes;
-                    
-                    if(notes != null){
-                        rows += "<td style=\"text-align:center;\">" + '<img src="/images/star.png"></img>' + '</td></tr>';
-                    } else{
-                        rows += "<td style=\"text-align:center;\"></td></tr>";
                     }
                 };
 

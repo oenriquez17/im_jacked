@@ -75,7 +75,7 @@
             $('#workout-entries').show(); 
             $('#add-entry').show();
 
-            $('#muscle-filter').hide();
+            $('#exercise').val(id).prop('disabled', 'disabled');;
 
             var uri = "/filterbyexercise?exercise=" + id; 
             

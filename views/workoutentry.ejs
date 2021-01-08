@@ -30,7 +30,14 @@
         <form action="add_edit_workoutentry" method="post">
             <div class="form-group">
                 <label for="workout-date">Workout Date</label>
-                <input class="form-control" type="date" name="workoutdate" id="workout-date" required>
+                <div class="input-group">
+                    <input class="form-control" type="date" name="workoutdate" id="workout-date" required>
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="basic-addon2">
+                            <img src="/images/calendar.png"></img>
+                        </span>
+                    </div>
+                </div>
             </div>
             <div class="form-group">
                 <label for="exercise">Exercise</label>

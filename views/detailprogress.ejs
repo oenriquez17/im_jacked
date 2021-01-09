@@ -30,6 +30,26 @@
         <br>
         <br>
 
+        <!-- Modal -->
+        <div class="modal fade" id="notesModal" tabindex="-1" role="dialog" aria-labelledby="notesModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="notesModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body" id="notesModalBody">
+                    
+                </div>
+                <div class="modal-footer">
+                
+                </div>
+            </div>
+            </div>
+        </div>
+
         <table class="table table-hover" id="workout-entries">
             <thead class="thead-light">
                 <tr>
@@ -37,6 +57,7 @@
                     <th scope="col" style="text-align:center;">Weight (lbs)</th>
                     <th scope="col" style="text-align:center;">Reps</th>
                     <th scope="col" style="text-align:center;">Sets</th>
+                    <th scope="col" style="text-align:center;"></th>
                 </tr>
             </thead>
             <tbody id="table-body">
@@ -93,7 +114,7 @@
             
             update_table(uri);  
             button_add_entry(id);
-        });
+        });        
 
         function update_table(uri){
             $("#table-body").empty();
@@ -113,11 +134,22 @@
                     var yyyy = dateObj.getFullYear();
 
                     var dateText = mm + '/' + dd + '/' + yyyy + ' ' + '(' + days[dateObj.getDay()] + ')';
+
+                    //notes
+                    var notes = workout_entries[i].notes;
+                    if(notes){
+                        rows += '<tr class="note-click" data-notes=' + notes + '>';
+                    }
+                    else{
+                        rows += '<tr>';
+                    }
                     
-                    rows += '<tr><td>' + dateText + '</td>';
+                    //date
+                    rows += '<td>' + dateText + '</td>';
 
                     var up = '<img src="/images/up.png"></img>';
                     var down = '<img src="/images/down.png"></img>';
+                    var star = '<img src="/images/star.png"></img>';
                     
                     //weight
                     var weight = workout_entries[i].weight;
@@ -167,15 +199,35 @@
                             img = down;
                         }
 
-                        rows += "<td style=\"text-align:center;\">" + sets + ' ' + img + '</td></tr>';
+                        rows += "<td style=\"text-align:center;\">" + sets + ' ' + img + '</td>';
                     }
                     else{
-                        rows += "<td style=\"text-align:center;\">" + sets + '</td></tr>';
+                        rows += "<td style=\"text-align:center;\">" + sets + '</td>';
                     }
+
+                    if(notes){
+                        rows += "<td style=\"text-align:center;\">" + star + '</td></tr>';
+                    }
+                    else{
+                        rows += "<td style=\"text-align:center;\">" + "" + '</td></tr>';
+                    }
+
                 };
 
                 $('#table-body').append(rows);
-            });   
+
+                $(".note-click").click(function() {
+                    $('#notesModalLabel').html('');
+                    $('#notesModalBody').html('');
+                    
+                    var notes = $(event.target).closest('tr').data('notes');
+                    var date = $(event.target).closest('tr').children()[0].textContent;
+                    
+                    $('<p>' + date + ' - Notes</p>').appendTo('#notesModalLabel');
+                    $('<p>' + notes + '</p>').appendTo('#notesModalBody');
+                    $("#notesModal").modal("show");
+                });
+            });          
         }
 
         function button_add_entry(id){

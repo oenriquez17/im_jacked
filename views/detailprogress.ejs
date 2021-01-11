@@ -138,7 +138,7 @@
                     //notes
                     var notes = workout_entries[i].notes;
                     if(notes){
-                        rows += '<tr class="note-click" data-notes=' + notes + '>';
+                        rows += '<tr class="note-click" data-index=' + i + '>';
                     }
                     else{
                         rows += '<tr>';
@@ -220,7 +220,8 @@
                     $('#notesModalLabel').html('');
                     $('#notesModalBody').html('');
                     
-                    var notes = $(event.target).closest('tr').data('notes');
+                    var workout_entry_index = $(event.target).closest('tr').data('index');
+                    var notes = workout_entries[workout_entry_index].notes;
                     var date = $(event.target).closest('tr').children()[0].textContent;
                     
                     $('<p>' + date + ' - Notes</p>').appendTo('#notesModalLabel');

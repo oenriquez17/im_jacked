@@ -119,7 +119,7 @@
         function update_table(uri){
             $("#table-body").empty();
             
-            var days = ['Sunday', 'Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+            var days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday', 'Sunday'];
             
             $.get(uri, function(data, status){
                 var workout_entries = data;

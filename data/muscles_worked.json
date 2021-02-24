@@ -44,6 +44,10 @@
         "name":"Side Delts"
     },
     {
+        "id":"TRAP",
+        "name":"Traps"
+    },
+    {
         "id":"TRI",
         "name":"Triceps"
     }

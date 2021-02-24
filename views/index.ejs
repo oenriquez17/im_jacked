@@ -29,9 +29,9 @@
             <thead class="thead-light">
                 <tr>
                     <th scope="col">Exercise</th>
+                    <th scope="col" style="text-align:center;">Progress (lbs)</th>
                     <th scope="col" style="text-align:center;">Max Weight (lbs)</th>
                     <th scope="col" style="text-align:center;">Avg. Reps</th>
-                    <th scope="col" style="text-align:center;">Progress (lbs)</th>
                 </tr>
             </thead>
 
@@ -85,9 +85,9 @@
 
                 rows += "<tr class='clickable-row' " + html_exercise_id + html_muscle_worked + ">";
                 rows += "<td>" + exercise.name + "</td>";
+                rows += "<td style=\"text-align:center;" + style + "\"><strong>" + progress + '</strong></td>';
                 rows += "<td style=\"text-align:center;\">" + exercise.max + "</td>";
-                rows += '<td style="text-align:center;">' + exercise.avg_reps + '</td>';
-                rows += "<td style=\"text-align:center;" + style + "\"><strong>" + progress + '</strong></td></tr>';
+                rows += '<td style="text-align:center;">' + exercise.avg_reps + '</td></tr>';
             });
 
             rows += '</tbody>';

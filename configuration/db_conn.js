@@ -15,7 +15,8 @@ const pool = new pg.Pool({
     password: password_var,
     host: host_var,
     port: port_var,
-    database: database_var
+    database: database_var,
+    ssl: true
 });
 
 console.log('*******DB CONFIG*********');

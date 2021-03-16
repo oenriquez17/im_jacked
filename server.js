@@ -28,7 +28,6 @@ app.listen(port, () => {
 });
 
 app.get('/', async function(req, res) {
-  console.log('Attempting to get index page...');
   const exercise_details = await db.pool.query(queries.get_exercise_details);
   res.render('index', {details: exercise_details.rows});
 });

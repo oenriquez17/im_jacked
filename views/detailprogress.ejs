@@ -234,7 +234,7 @@
         function button_add_entry(id){
             jQuery(document).ready(function($) {
                 $("#add-entry").click(function() {
-                    var uri = '/workoutentry?id=' + id;
+                    var uri = '/workoutentry?exerciseid=' + id;
                     window.location.replace(uri);
                 });
             });

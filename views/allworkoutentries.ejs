@@ -89,10 +89,11 @@
                 //name
                 var muscle = muscle_list[entry.muscle_worked];
 
-                var html_exercise_id = "data-id='" + entry.id + "'";
+                var html_id = "data-id='" + entry.id + "'";
+                var html_exercise_id = "data-exerciseid='" + entry.exercise + "'";
 
                 var nameText = entry.name + ' ' + '(' + muscle + ')';
-                rows += "<tr class=\"clickable-row\" " + html_exercise_id +  "><td>" + nameText + '</td>';
+                rows += "<tr class=\"clickable-row\" " + html_exercise_id + " " + html_id + "><td>" + nameText + '</td>';
                 
                 //weight
                 var weight = entry.weight;
@@ -111,7 +112,8 @@
 
             $(".clickable-row").click(function() {
                 var id = $(this).data("id");
-                var uri = '/detailprogress?id=' + id;
+                var exercise_id = $(this).data("exerciseid");
+                var uri = '/workoutentry?exerciseid=' + exercise_id + '&id=' + id;
                 window.location.replace(uri);
             });
         }

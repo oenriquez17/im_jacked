@@ -33,9 +33,16 @@ app.get('/', async function(req, res) {
 });
 
 app.get('/workoutentry', async function(req, res) {
-  const exercise_id = req.query.id;
-  const db_exercises = await db.pool.query(queries.get_all_exercise);
-  res.render('workoutentry', {exercises: db_exercises.rows, exercise_id: exercise_id});
+  const id = req.query.id;
+  const exercise_id = req.query.exerciseid;
+
+  if(id) {
+    const db_workout_entry = await db.pool.query(queries.get_workoutentry_byid, [id]);
+    res.render('workoutentry', {exercises: [], exercise_id: undefined, entries: db_workout_entry.rows[0]}); 
+  } else {
+    const db_exercises = await db.pool.query(queries.get_all_exercise);
+    res.render('workoutentry', {exercises: db_exercises.rows, exercise_id: exercise_id, entries: []});
+  }
 });
 
 app.get('/exercise', function(req, res) {
@@ -95,26 +102,35 @@ app.post('/add_edit_exercise', urlencodedParser, async function (req, res) {
 
 app.post('/add_edit_workoutentry', urlencodedParser, async function (req, res) {
   const r = res;
+  
   const date =  req.body.workoutdate;
   const exercise =  req.body.exercise;
+  const id = req.body.entry_id;
+  
   var reps = req.body.reps == "" ? null : parseInt(req.body.reps);
   var sets = req.body.sets = "" ? null : parseInt(req.body.sets);
   var weight = req.body.weight == "" ? null : parseInt(req.body.weight);
   var notes = req.body.notes == "" ? null : req.body.notes;
   
-  db.pool.query(queries.insert_workout_entry, [date, exercise, reps, sets, weight, notes],
-    (err, res) => {
-      if(err) {
-        var d = new Date(date);
-        var e = 'Exercise already logged for ' 
-        + (d.getMonth() < 9 ? ('0' + (d.getMonth() + 1)) : (d.getMonth() + 1))
-        + '/' 
-        + (d.getDay() < 10 ? ('0' + d.getDay()) : d.getDay())
-        + '/' + d.getFullYear();
-        r.render('workoutentry', {error: e, exercises: {}});
-      } else {
-        r.redirect('/detailprogress?id=' + exercise);
+  if(id) {
+    db.pool.query(queries.update_workout_entry, [reps, sets, weight, notes, id],
+      (err, res) => {
+        if(err) {
+          r.render('workoutentry', {error: err, exercises: {}, exercise_id: {}, entries: []});
+        } else {
+          r.redirect('/detailprogress?id=' + exercise);
+        }
       }
-    }
-  );
+    );
+  } else {
+    db.pool.query(queries.insert_workout_entry, [date, exercise, reps, sets, weight, notes],
+      (err, res) => {
+        if(err) {
+          r.render('workoutentry', {error: err, exercises: {}, exercise_id: {}, entries: []});
+        } else {
+          r.redirect('/detailprogress?id=' + exercise);
+        }
+      }
+    );
+  }
 });

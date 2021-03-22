@@ -28,6 +28,7 @@
         </div>
 
         <form action="add_edit_workoutentry" method="post">
+            <input class="form-control" type="hidden" id="entry_id" name="entry_id" value="">
             <div class="form-group">
                 <label for="workout-date">Workout Date</label>
                 <div class="input-group">
@@ -74,33 +75,53 @@
     </div>
 
     <script type="text/javascript">
-        //set date field to current date
-        var now = new Date();
-
-        var day = ("0" + now.getDate()).slice(-2);
-        var month = ("0" + (now.getMonth() + 1)).slice(-2);
-
-        var today = now.getFullYear() + "-" + (month) + "-" + (day);
-
-        $('#workout-date').val(today);
-
-        //populate exercise dropdown with available values
         let dropdown = $('#exercise');
 
         dropdown.empty();
 
-        dropdown.append('<option disabled selected value>Choose exercise</option>');
+        var exercise_id = '<%- exercise_id %>';
+        var entry = JSON.parse('<%- JSON.stringify(entries) %>');
 
-        var available_exercises = JSON.parse('<%- JSON.stringify(exercises) %>');
-        $.each(available_exercises, function(i, exercise) {
-            var id = available_exercises[i].id;
-            var name = available_exercises[i].name;
-            dropdown.append($('<option></option>').attr('value', id).text(name));
-        });
+        if(exercise_id || entry.length == 0){
+            
+            dropdown.append('<option disabled selected value>Choose exercise</option>');
+            
+            //set date field to current date
+            var now = new Date();
 
-        var id = '<%- exercise_id %>';
-        if(id){
-            dropdown.val(id);
+            var day = ("0" + now.getDate()).slice(-2);
+            var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+            var today = now.getFullYear() + "-" + (month) + "-" + (day);
+
+            $('#workout-date').val(today);
+
+            var available_exercises = JSON.parse('<%- JSON.stringify(exercises) %>');
+            $.each(available_exercises, function(i, exercise) {
+                var id = available_exercises[i].id;
+                var name = available_exercises[i].name;
+                dropdown.append($('<option></option>').attr('value', id).text(name));
+            });
+
+            dropdown.val(exercise_id);
+        } else {
+
+            $('input[name="entry_id"]').val(entry.id);
+
+            $('#workout-date').val(entry.entry_date);
+            $('#workout-date').attr("disabled", true);
+            dropdown.attr("readonly", "readonly");
+
+            dropdown.append($('<option></option>').attr('value', entry.exercise).text(entry.exercise_name));
+            dropdown.val(entry.exercise);
+
+            $('#reps').val(entry.reps_completed);
+            $('#sets').val(entry.sets_completed);
+            $('#weight').val(entry.weight);
+            
+            if(entry.notes){
+                $('#notes').val(entry.notes);
+            }
         }
 
     </script>

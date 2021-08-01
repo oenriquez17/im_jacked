@@ -26,12 +26,11 @@
         <br>
         
         <table class="table table-hover" id="details-table">
-            <thead class="thead-light">
-                <tr>
+            <thead class="thead">
+                <tr class="table-primary">
                     <th scope="col">Exercise</th>
-                    <th scope="col" style="text-align:center;">Progress (lbs)</th>
-                    <th scope="col" style="text-align:center;">Max Weight (lbs)</th>
-                    <th scope="col" style="text-align:center;">Avg. Reps</th>
+                    <th scope="col" style="text-align:center;">Max (lbs)</th>
+                    <th scope="col" style="text-align:center;">Last Entry Date</th>
                 </tr>
             </thead>
 
@@ -66,30 +65,31 @@
 
         $(function() {
             var rows = '<tbody>';
+            const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday', 'Sunday'];
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            
             $.each(details, function (i, exercise) {
                 var max = exercise.max == null ? 0 : exercise.max;
-                var min = exercise.min;
-                var progress = (max - min);
 
-                var avg_reps = exercise.avg_reps == null ? 0 : exercise.avg_reps;
+                var latest_entry_date = exercise.latest_entry_date == null ? '' : exercise.latest_entry_date;
+                var dateText = '';
+
+                if(latest_entry_date != '') {
+                    var dateObj = new Date(latest_entry_date);
+
+                    var dd = String(dateObj.getDate() + 1).padStart(2, '0');
+                    var month = monthNames[dateObj.getMonth()];
+
+                    dateText = days[dateObj.getDay()] + ', ' + month + ' ' + dd;
+                }
 
                 var html_exercise_id = "data-id='" + exercise.id + "'";
                 var html_muscle_worked = " data-muscle='" + exercise.muscle + "'";
-                
-                var style;
-                if(progress > 0){
-                    style = "color:green;";
-                } else if(progress < 0){
-                    style = "color:green;";
-                } else{
-                    style = "color:gray;";
-                }
 
                 rows += "<tr class='clickable-row' " + html_exercise_id + html_muscle_worked + ">";
                 rows += "<td>" + exercise.name + "</td>";
-                rows += "<td style=\"text-align:center;" + style + "\"><strong>" + progress + '</strong></td>';
                 rows += "<td style=\"text-align:center;\">" + max + "</td>";
-                rows += '<td style="text-align:center;">' + avg_reps + '</td></tr>';
+                rows += '<td style="text-align:center;">' + dateText + '</td></tr>';
             });
 
             rows += '</tbody>';

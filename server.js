@@ -108,12 +108,11 @@ app.post('/add_edit_workoutentry', urlencodedParser, async function (req, res) {
   const id = req.body.entry_id;
   
   var reps = req.body.reps == "" ? null : parseInt(req.body.reps);
-  var sets = req.body.sets = "" ? null : parseInt(req.body.sets);
   var weight = req.body.weight == "" ? null : parseInt(req.body.weight);
   var notes = req.body.notes == "" ? null : req.body.notes;
   
   if(id) {
-    db.pool.query(queries.update_workout_entry, [reps, sets, weight, notes, id],
+    db.pool.query(queries.update_workout_entry, [reps, weight, notes, id],
       (err, res) => {
         if(err) {
           r.render('workoutentry', {error: err, exercises: {}, exercise_id: {}, entries: []});
@@ -123,7 +122,7 @@ app.post('/add_edit_workoutentry', urlencodedParser, async function (req, res) {
       }
     );
   } else {
-    db.pool.query(queries.insert_workout_entry, [date, exercise, reps, sets, weight, notes],
+    db.pool.query(queries.insert_workout_entry, [date, exercise, reps, weight, notes],
       (err, res) => {
         if(err) {
           r.render('workoutentry', {error: err, exercises: {}, exercise_id: {}, entries: []});

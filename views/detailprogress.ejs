@@ -51,12 +51,11 @@
         </div>
 
         <table class="table table-hover" id="workout-entries">
-            <thead class="thead-light">
-                <tr>
+            <thead class="thead">
+                <tr class="table-primary">
                     <th scope="col">Date</th>
                     <th scope="col" style="text-align:center;">Weight (lbs)</th>
                     <th scope="col" style="text-align:center;">Reps</th>
-                    <th scope="col" style="text-align:center;">Sets</th>
                     <th scope="col" style="text-align:center;"></th>
                 </tr>
             </thead>
@@ -119,8 +118,10 @@
         function update_table(uri){
             $("#table-body").empty();
             
-            var days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday', 'Sunday'];
-            
+            const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday', 'Sunday'];
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            const star = '<img src="/images/star.png"></img>';
+
             $.get(uri, function(data, status){
                 var workout_entries = data;
 
@@ -130,10 +131,9 @@
                     var dateObj = new Date(workout_entries[i].entry_date);
 
                     var dd = String(dateObj.getDate() + 1).padStart(2, '0');
-                    var mm = String(dateObj.getMonth() + 1).padStart(2, '0');
-                    var yyyy = dateObj.getFullYear();
+                    var month = monthNames[dateObj.getMonth()];
 
-                    var dateText = mm + '/' + dd + '/' + yyyy + ' ' + '(' + days[dateObj.getDay()] + ')';
+                    var dateText = days[dateObj.getDay()] + ', ' + month + ' ' + dd;
 
                     //notes
                     var notes = workout_entries[i].notes;
@@ -146,64 +146,14 @@
                     
                     //date
                     rows += '<td>' + dateText + '</td>';
-
-                    var up = '<img src="/images/up.png"></img>';
-                    var down = '<img src="/images/down.png"></img>';
-                    var star = '<img src="/images/star.png"></img>';
                     
                     //weight
                     var weight = workout_entries[i].weight;
-                    if(i < (workout_entries.length - 1)){
-                        var previous_weight = weight - workout_entries[i + 1].weight;
-                        var img = '';
-                        if(previous_weight > 0){
-                            img = up;
-                        }
-                        else if(previous_weight < 0){
-                            img = down;
-                        }
-
-                        rows += "<td style=\"text-align:center;\">" + weight + ' ' + img + '</td>';
-                    }
-                    else{
-                        rows += "<td style=\"text-align:center;\">" + weight + '</td>';
-                    }
+                    rows += "<td style=\"text-align:center;\">" + weight + '</td>';
 
                     //reps
                     var reps = workout_entries[i].reps_completed;
-                    if(i < (workout_entries.length - 1)){
-                        var previous_reps = reps - workout_entries[i + 1].reps_completed;
-                        var img = '';
-                        if(previous_reps > 0){
-                            img = up;
-                        }
-                        else if(previous_reps < 0){
-                            img = down;
-                        }
-
-                        rows += "<td style=\"text-align:center;\">" + reps + ' ' + img + '</td>';
-                    }
-                    else{
-                        rows += "<td style=\"text-align:center;\">" + reps + '</td>';
-                    }
-                    
-                    //sets
-                    var sets = workout_entries[i].sets_completed;
-                    if(i < (workout_entries.length - 1)){
-                        var previous_sets = sets - workout_entries[i + 1].sets_completed;
-                        var img = '';
-                        if(previous_sets > 0){
-                            img = up;
-                        }
-                        else if(previous_sets < 0){
-                            img = down;
-                        }
-
-                        rows += "<td style=\"text-align:center;\">" + sets + ' ' + img + '</td>';
-                    }
-                    else{
-                        rows += "<td style=\"text-align:center;\">" + sets + '</td>';
-                    }
+                    rows += "<td style=\"text-align:center;\">" + reps + '</td>';
 
                     if(notes){
                         rows += "<td style=\"text-align:center;\">" + star + '</td></tr>';

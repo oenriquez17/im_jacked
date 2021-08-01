@@ -58,10 +58,6 @@
                 <input class="form-control" autocomplete="off" type="number" id="reps" name="reps" placeholder="Enter the number of reps per set performed" required>
             </div>
             <div class="form-group">
-                <label for="sets">Sets</label>
-                <input class="form-control" autocomplete="off" type="number" id="sets" name="sets" placeholder="Enter the number of sets performed" required>
-            </div>
-            <div class="form-group">
                 <label for="notes">Notes</label>
                 <textarea class="form-control" id="notes" name="notes" rows="3" autocomplete="off" placeholder="Enter any notes"></textarea>
             </div>
@@ -116,7 +112,6 @@
             dropdown.val(entry.exercise);
 
             $('#reps').val(entry.reps_completed);
-            $('#sets').val(entry.sets_completed);
             $('#weight').val(entry.weight);
             
             if(entry.notes){

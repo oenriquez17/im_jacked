@@ -153,7 +153,12 @@
 
                     //reps
                     var reps = workout_entries[i].reps_completed;
-                    rows += "<td style=\"text-align:center;\">" + reps + '</td>';
+                    var failure = workout_entries[i].failure;
+                    if(failure) {
+                        rows += "<td style=\"text-align:center; color:red;\">" + reps + '</td>';
+                    } else {
+                        rows += "<td style=\"text-align:center;\">" + reps + '</td>';
+                    }
 
                     if(notes){
                         rows += "<td style=\"text-align:center;\">" + star + '</td></tr>';

@@ -12,6 +12,9 @@ const update_workout_entry = 'UPDATE workout_entries SET reps_completed = $1, we
 //Selects all exercises, ordered by NAME
 const get_all_exercise = 'SELECT * FROM exercises ORDER BY name';
 
+//Updates exercise note
+const update_exercise_note = 'UPDATE exercises SET exercise_notes = $1 WHERE id = $2';
+
 //Selects all exercises, ordered by NAME
 const get_workoutentry_byid = "SELECT w.id, TO_CHAR(w.entry_date, 'YYYY-MM-DD') AS entry_date, w.reps_completed, w.weight, w.notes, w.exercise, w.failure, e.name AS exercise_name FROM workout_entries w LEFT JOIN exercises e ON e.id = w.exercise WHERE w.id = $1";
 
@@ -30,6 +33,7 @@ module.exports =
     update_workout_entry,
     get_workoutentry_byid,
     get_all_exercise,
+    update_exercise_note,
     get_exercise_details,
     get_exerciseprogress_details,
     get_workoutentries_bydate

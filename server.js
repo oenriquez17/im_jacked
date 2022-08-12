@@ -49,6 +49,11 @@ app.get('/exercise', function(req, res) {
   res.render('exercise');
 });
 
+app.get('/exercisenotes', async function(req, res) {
+  const db_exercises = await db.pool.query(queries.get_all_exercise);
+  res.render('exercisenotes', {exercises: db_exercises.rows});
+});
+
 app.get('/detailprogress', async function(req, res) {
   const id = req.query.id;
   const db_exercises = await db.pool.query(queries.get_all_exercise);
@@ -93,6 +98,22 @@ app.post('/add_edit_exercise', urlencodedParser, async function (req, res) {
     (err, res) => {
       if(err){
         r.render('exercise', {error: 'Exercise name already exists.'})
+      }else{
+        r.redirect('/');
+      }
+    }  
+  );
+});
+
+app.post('/update_exercise_note', urlencodedParser, async function (req, res) {
+  const r = res;
+  var note =  req.body.notes;
+  var exercise =  req.body.exercise;
+  
+  db.pool.query(queries.update_exercise_note, [note, exercise],
+    (err, res) => {
+      if(err){
+        r.render('exercisenotes', {error: err, exercises: {}})
       }else{
         r.redirect('/');
       }

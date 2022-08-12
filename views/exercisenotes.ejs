@@ -1,0 +1,116 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Exercise Notes</title>
+
+    <link href="/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <script src="/jquery/jquery.js"></script>
+
+</head>
+
+<body>
+    <%- include('navbar') %>
+
+    <br>
+
+    <div id="exercise-notes-form" class="container">
+
+        <div class="error">
+            <% if (locals.error) { %>
+                <div class="alert alert-danger" role="alert">
+                    <%= error %>
+                </div>
+            <% } %>
+        </div>
+
+        <div class="form-group">
+            <label for="muscles-worked">Filter by muscle worked</label>
+            <select class="form-control" id="muscles-worked" name="muscle"></select>
+        </div>
+
+        <form action="update_exercise_note" method="post">
+            
+            <div class="form-group">
+                <label for="exercise">Exercise</label>
+                <select class="form-control" id="exercise" name="exercise" required></select>
+            </div>
+            <div class="form-group">
+                <label for="notes">Notes</label>
+                <textarea class="form-control" id="notes" name="notes" rows="4" autocomplete="off" placeholder="Enter any notes"></textarea>
+            </div>
+
+            <br>
+
+            <button class="btn btn-dark float-right" type="submit">Save</button>
+        </form>
+    </div>
+
+    <script type="text/javascript">
+         // Muscle Filter
+        let muscle_dropdown = $('#muscles-worked');
+
+        muscle_dropdown.empty();
+
+        muscle_dropdown.append("<option selected value=''>All</option>");
+
+        var muscles_worked = '/data/muscles_worked.json';
+
+        // Populate dropdown with list of muscles
+        $.getJSON(muscles_worked, function(data) {
+            $.each(data, function(key, entry) {
+                muscle_dropdown.append($('<option></option>').attr('value', entry.id).text(entry.name));
+            })
+        });
+
+        // When filter change
+        $('#muscles-worked').change(function() {
+            $("#exercise").children('option').hide();
+            var muscle_id = $(this).val();
+            if(muscle_id) {
+                $("#exercise option[muscle_worked=" + muscle_id + "]").show();
+            } else {
+                $("#exercise").children('option').show();
+            } 
+        });
+
+        // Exercises 
+
+        // Populate dropdown with list of exercises
+        let exercise_dropdown = $('#exercise');
+
+        exercise_dropdown.empty();
+
+        exercise_dropdown.append('<option disabled>Choose exercise</option>');
+        exercise_dropdown.prop('selectedIndex', 0);
+
+        var available_exercises = JSON.parse('<%- JSON.stringify(exercises) %>');
+        $.each(available_exercises, function(i, exercise) {
+            var id = available_exercises[i].id;
+            var name = available_exercises[i].name;
+            var muscle_worked = available_exercises[i].muscle_worked;
+            exercise_dropdown.append($('<option></option>').attr('value', id).attr('muscle_worked', muscle_worked).text(name));
+        });
+
+        // Populate notes when exercise is selected
+        $('#exercise').change(function() {
+            var id = $(this).val();
+            $('#notes').text('');
+            var exercise_notes = available_exercises.find(e => e.id == id).exercise_notes;
+            if(exercise_notes) {
+                $('#notes').text(exercise_notes);
+            } else {
+                $('#notes').text('');
+            }
+        });
+
+    </script>
+    <script src="/js/bootstrap.js" type="text/javascript"></script>
+
+</body>
+
+</html>

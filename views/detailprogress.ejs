@@ -25,6 +25,8 @@
             </div>
         </form>
 
+        <div id="exercise-note" class="alert alert-info" role="alert"></div>
+
         <button class="btn btn-dark float-right" id="add-entry" type="button">Add Entry</button>
 
         <br>
@@ -71,11 +73,12 @@
 
     <script type="text/javascript">
 
-        // Hides chart when first loaded
+        // Hides table when first loaded
         $('#workout-entries').hide();
         $('#add-entry').hide();
+        $('#exercise-note').hide();
         
-        // Populate dropdown with list of provinces
+        // Populate dropdown with list of exercises
         let dropdown = $('#exercise');
 
         dropdown.empty();
@@ -95,6 +98,9 @@
             $('#workout-entries').show(); 
             $('#add-entry').show();
 
+            var exercise_notes = available_exercises.find(e => e.id == id).exercise_notes;
+            showExerciseNotes(exercise_notes);
+
             $('#exercise').val(id);
 
             var uri = "/filterbyexercise?exercise=" + id; 
@@ -109,11 +115,23 @@
             $('#add-entry').show();
             
             var id = $('select#exercise').val();
-            var uri = "/filterbyexercise?exercise=" + id; 
+            var uri = "/filterbyexercise?exercise=" + id;
+
+            var exercise_notes = available_exercises.find(e => e.id == id).exercise_notes;
+            showExerciseNotes(exercise_notes);
             
             update_table(uri);  
             button_add_entry(id);
-        });        
+        });
+        
+        function showExerciseNotes(notes) {
+            console.log(notes);
+            if(notes) {
+                $('#exercise-note').text(notes).show();
+            } else {
+                $('#exercise-note').text('').hide();
+            }
+        }
 
         function update_table(uri){
             $("#table-body").empty();
